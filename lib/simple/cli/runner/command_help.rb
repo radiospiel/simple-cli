@@ -10,6 +10,7 @@ class Simple::CLI::Runner::CommandHelp
   end
 
   def initialize(mod, method)
+    raise(ArgumentError) unless method.is_a?(Symbol)
     @mod = mod
     @method = method
   end

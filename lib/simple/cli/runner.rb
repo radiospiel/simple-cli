@@ -65,7 +65,7 @@ class Simple::CLI::Runner
   end
 
   def help_subcommand!(subcommand)
-    edoc = CommandHelp.new(@app, subcommand)
+    edoc = CommandHelp.new(@app, string_to_command(subcommand))
 
     puts <<~MSG
       #{help_for_command(subcommand)}
@@ -118,7 +118,7 @@ class Simple::CLI::Runner
   end
 
   def commands
-    @app.public_instance_methods(false).grep(/^[_a-zA-Z0-9]+$/) + [:help]
+    @app.public_instance_methods(false).grep(/^[_a-zA-Z0-9]+$/)
   end
 
   def help_for_command(sym)
@@ -127,8 +127,7 @@ class Simple::CLI::Runner
       return
     end
 
-    command_name = command_to_string(sym)
-    CommandHelp.new(@app, sym).interface(binary_name, command_name)
+    CommandHelp.new(@app, sym).interface(binary_name, string_to_command(sym))
   end
 
   def binary_name
@@ -157,6 +156,7 @@ class Simple::CLI::Runner
 
           #{binary_name} [ --verbose | -v ]         # run on DEBUG log level
           #{binary_name} [ --quiet | -q ]           # run on WARN log level
+          #{binary_name} help [ subcommand ]        # print help on a specific subcommand
           #{binary_name} help autocomplete          # print information on autocompletion.
 
     DOC

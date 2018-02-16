@@ -31,10 +31,4 @@ module Simple::CLI
   def run!(command, *args)
     send(command, *args)
   end
-
-  # Print help on a subcommand
-  def help(subcommand = nil)
-    # This method is a dummy. It is necessary to provide a stub for the purpose
-    # of documentation - BUT THIS METHOD WILL NEVER BE CALLED.
-  end
 end
