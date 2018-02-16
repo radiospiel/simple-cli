@@ -10,7 +10,7 @@ require "rspec"
 
 Dir.glob("./spec/support/**/*.rb").sort.each { |path| load path }
 
-require "simple/sql"
+require "simple/cli"
 
 RSpec.configure do |config|
   config.run_all_when_everything_filtered = true

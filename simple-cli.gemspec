@@ -13,7 +13,7 @@ Gem::Specification.new do |gem|
 
   gem.authors  = [ "radiospiel", "mediapeers GmbH" ]
   gem.email    = "eno@radiospiel.org"
-  gem.homepage = "http://github.com/radiospiel/simple-sql"
+  gem.homepage = "http://github.com/radiospiel/simple-cli"
   gem.summary  = "Simple CLI builder for ruby"
 
   gem.description = "Simple CLI builder"

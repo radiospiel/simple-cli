@@ -2,10 +2,10 @@ require 'bundler'
 Bundler.setup
 
 GEM_ROOT = File.expand_path('../../', __FILE__)
-GEM_SPEC = "simple-sql.gemspec"
+GEM_SPEC = "simple-cli.gemspec"
 
-require 'simple/sql/version'
-VERSION_FILE_PATH = 'lib/simple/sql/version.rb'
+require 'simple/cli/version'
+VERSION_FILE_PATH = 'lib/simple/cli/version.rb'
 
 class VersionNumberTracker
   class << self
@@ -18,7 +18,7 @@ class VersionNumberTracker
     end
 
     def auto_version_bump
-      old_version_number = Simple::SQL::VERSION
+      old_version_number = Simple::CLI::VERSION
       old = old_version_number.split('.')
       current = old[0..-2] << old[-1].next
       new_version_number = current.join('.')
@@ -27,7 +27,7 @@ class VersionNumberTracker
     end
 
     def manual_version_bump
-      update_version_file(Simple::SQL::VERSION, ENV['VERSION'])
+      update_version_file(Simple::CLI::VERSION, ENV['VERSION'])
     end
 
     def update_version_number
