@@ -1,0 +1,88 @@
+require "open3"
+
+# Helpers are mixed into all CLI modules. They implement the following methods,
+# mostly to help with integrating external commands:
+#
+# - sys
+# - sys!
+# - sh!
+# - die!
+#
+module Simple::CLI::Helpers
+  def die!(msg)
+    STDERR.puts msg
+    exit 1
+  end
+
+  def sh!(cmd, *args)
+    command = Command.new(cmd, *args)
+    result = command.sh
+    command.check_success!
+    first_line, more = result.split("\n", 2)
+    if more == ""
+      first_line
+    else
+      result
+    end
+  end
+
+  def sys(cmd, *args)
+    command = Command.new(cmd, *args)
+    command.run
+    command.success?
+  end
+
+  def sys!(cmd, *args)
+    command = Command.new(cmd, *args)
+    command.run
+    command.check_success!
+    true
+  end
+
+  class Command
+    def initialize(cmd, *args)
+      @cmd = cmd
+      @args = [ cmd ] + args
+    end
+
+    def sh
+      STDERR.puts "> #{self}"
+      stdout_str, @process_status = Open3.capture2(*@args, binmode: true)
+      stdout_str
+    end
+
+    def run
+      STDERR.puts "> #{self}"
+      rv = if @args.length > 1
+        system to_s
+      else
+        system *@args
+      end
+
+      @process_status = $?
+      rv
+    end
+
+    def success?
+      @process_status.success?
+    end
+
+    def check_success!
+      return if @process_status.success?
+      raise "#{@cmd} failed with #{@process_status.exitstatus}: #{self}"
+    end
+
+    # Returns the command as a single string, escaping things as necessary.
+    def to_s
+      require "shellwords"
+
+      escaped_args = @args.map do |arg|
+        escaped = Shellwords.escape(arg)
+        next escaped if escaped == arg
+        next escaped if arg.include?("'")
+        "'#{arg}'"
+      end
+      escaped_args.join(" ")
+    end
+  end
+end
