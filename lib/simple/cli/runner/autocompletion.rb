@@ -32,7 +32,7 @@ module Simple::CLI::Runner::Autocompletion
 
   def autocomplete_subcommand_options(subcommand, cur)
     completions = if subcommand == "help"
-                    commands.map(&:to_s) + ["autocomplete"]
+                    commands.map(&:to_s).map { |s| s.tr("_", ":") } + ["autocomplete"]
                   else
                     CommandHelp.option_names(@app, string_to_command(subcommand))
                   end

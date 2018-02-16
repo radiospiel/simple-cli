@@ -10,7 +10,7 @@ class Simple::CLI::Runner::CommandHelp
   end
 
   def initialize(mod, method)
-    raise(ArgumentError) unless method.is_a?(Symbol)
+    raise(ArgumentError, "#{method.inspect} should be a Symbol") unless method.is_a?(Symbol)
     @mod = mod
     @method = method
   end
@@ -57,13 +57,17 @@ class Simple::CLI::Runner::CommandHelp
       end
     end
 
-    help = "#{binary_name} #{command_name}"
+    help = "#{binary_name} #{command_to_string(command_name)}"
     help << " #{options.join(' ')}" unless options.empty?
     help << " #{args.join(' ')}" unless args.empty?
     help
   end
 
   private
+
+  def command_to_string(s)
+    s.to_s.tr("_", ":")
+  end
 
   def comments
     @comments ||= begin

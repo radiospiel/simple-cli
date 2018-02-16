@@ -114,7 +114,7 @@ class Simple::CLI::Runner
   end
 
   def string_to_command(s)
-    s.tr(":", "_").to_sym
+    s.to_s.tr(":", "_").to_sym
   end
 
   def commands
@@ -127,7 +127,8 @@ class Simple::CLI::Runner
       return
     end
 
-    CommandHelp.new(@app, sym).interface(binary_name, string_to_command(sym))
+    cmd = string_to_command(sym)
+    CommandHelp.new(@app, cmd).interface(binary_name, cmd)
   end
 
   def binary_name
