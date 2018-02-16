@@ -15,6 +15,9 @@ Metrics/LineLength:
 Style/SpecialGlobalVars:
   Enabled: false
 
+Style/PerlBackrefs:
+  Enabled: false
+
 Style/StringLiterals:
   EnforcedStyle: double_quotes
   ConsistentQuotesInMultiline: false
@@ -32,4 +35,10 @@ Style/Documentation:
   Enabled: false
 
 Style/MutableConstant:
+  Enabled: false
+
+Lint/MissingCopEnableDirective:
+  Enabled: false
+
+Style/RegexpLiteral:
   Enabled: false

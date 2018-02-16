@@ -13,7 +13,7 @@ module Simple::CLI::Logger
 
   def build_default_logger
     logger = Logger.new(STDOUT)
-    logger.formatter = proc do |severity, datetime, progname, msg|
+    logger.formatter = proc do |severity, _datetime, _progname, msg|
       "#{severity}: #{msg}\n"
     end
     logger.level = Logger::INFO

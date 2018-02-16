@@ -1,13 +1,16 @@
 module Simple::CLI::Runner::Autocompletion
   CommandHelp = Simple::CLI::Runner::CommandHelp
 
-  def autocomplete(subcommand=nil, cur=nil)
-    completions = if !cur
+  def autocomplete(subcommand = nil, cur = nil)
+    puts completions(subcommand, cur).join("\n")
+  end
+
+  def completions(subcommand = nil, cur = nil)
+    if !cur
       autocomplete_subcommands(subcommand)
     else
       autocomplete_subcommand_options(subcommand, cur)
     end
-    puts completions.join("\n")
   end
 
   def filter_completions(completions, prefix:)
@@ -18,7 +21,7 @@ module Simple::CLI::Runner::Autocompletion
 
   def autocomplete_subcommands(cur)
     completions = filter_completions commands.map(&:to_s), prefix: cur
-    if completions == [ cur ]
+    if completions == [cur]
       autocomplete_subcommand_options(cur, nil)
     else
       completions
@@ -27,19 +30,19 @@ module Simple::CLI::Runner::Autocompletion
 
   def autocomplete_subcommand_options(subcommand, cur)
     completions = if subcommand == "help"
-      commands.map(&:to_s) + [ "autocomplete" ]
-    else
-      CommandHelp.option_names(@app, subcommand)
-    end
+                    commands.map(&:to_s) + ["autocomplete"]
+                  else
+                    CommandHelp.option_names(@app, subcommand)
+                  end
 
     filter_completions completions, prefix: cur
   end
 
   def autocomplete_help
     STDERR.puts <<~DOC
-    #{binary_name} supports autocompletion. To enable autocompletion please run 
-  
-        eval "$(#{$0} autocomplete:bash)"
+      #{binary_name} supports autocompletion. To enable autocompletion please run
+
+          eval "$(#{$0} autocomplete:bash)"
     DOC
 
     exit 1
@@ -61,20 +64,20 @@ module Simple::CLI::Runner::Autocompletion
   # see https://www.gnu.org/software/bash/manual/html_node/Programmable-Completion-Builtins.html
   #
   AUTOCOMPLETE_SHELL_CODE = <<~BASH
-  _{{BINARY}}() 
-  {
-    local cmd=$1
-    local cur=$2
+    _{{BINARY}}()
+    {
+      local cmd=$1
+      local cur=$2
 
-    if [[ $COMP_CWORD == 1 ]]; then
-      COMPREPLY=( $("$cmd" autocomplete "$cur" ))
-    else
-      local subcommand=${COMP_WORDS[1]}
-      COMPREPLY=( $("$cmd" autocomplete "$subcommand" "$cur" ))
-    fi
+      if [[ $COMP_CWORD == 1 ]]; then
+        COMPREPLY=( $("$cmd" autocomplete "$cur" ))
+      else
+        local subcommand=${COMP_WORDS[1]}
+        COMPREPLY=( $("$cmd" autocomplete "$subcommand" "$cur" ))
+      fi
 
-    return 0
-  }
-  complete -F _{{BINARY}} {{BINARY}}
+      return 0
+    }
+    complete -F _{{BINARY}} {{BINARY}}
   BASH
 end

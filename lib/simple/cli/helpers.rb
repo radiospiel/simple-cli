@@ -42,7 +42,7 @@ module Simple::CLI::Helpers
   class Command
     def initialize(cmd, *args)
       @cmd = cmd
-      @args = [ cmd ] + args
+      @args = [cmd] + args
     end
 
     def sh
@@ -54,10 +54,10 @@ module Simple::CLI::Helpers
     def run
       STDERR.puts "> #{self}"
       rv = if @args.length > 1
-        system to_s
-      else
-        system *@args
-      end
+             system to_s
+           else
+             system @args.first
+           end
 
       @process_status = $?
       rv

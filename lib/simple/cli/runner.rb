@@ -1,3 +1,9 @@
+# rubocop:disable  Metrics/AbcSize
+# rubocop:disable  Metrics/ClassLength
+# rubocop:disable  Metrics/CyclomaticComplexity
+# rubocop:disable  Metrics/MethodLength
+# rubocop:disable  Metrics/PerceivedComplexity
+
 class Simple::CLI::Runner
 end
 
@@ -38,9 +44,9 @@ class Simple::CLI::Runner
     if command == :help
       do_help!(*args)
     elsif command == :autocomplete
-      autocomplete *args
+      autocomplete(*args)
     elsif command == :autocomplete_bash
-      autocomplete_bash *args
+      autocomplete_bash(*args)
     elsif commands.include?(command)
       @instance.run! command, *args_with_options(args)
     else
@@ -90,7 +96,7 @@ class Simple::CLI::Runner
   def args_with_options(args)
     r = []
     options = {}
-    while arg = args.shift
+    while (arg = args.shift)
       case arg
       when /^--(.*)=(.*)/ then options[$1.to_sym] = $2
       when /^--no-(.*)/   then options[$1.to_sym] = false
@@ -104,11 +110,11 @@ class Simple::CLI::Runner
   end
 
   def command_to_string(sym)
-    sym.to_s.gsub("_", ":")
+    sym.to_s.tr("_", ":")
   end
 
   def string_to_command(s)
-    s.gsub(":", "_").to_sym
+    s.tr(":", "_").to_sym
   end
 
   def commands
@@ -138,20 +144,20 @@ class Simple::CLI::Runner
 
     commands.sort.each do |sym|
       command_help = command_helps.fetch(sym)
-      command_help = "%-#{max_command_helps_length}s" % command_help
+      command_help = format("%-#{max_command_helps_length}s", command_help)
       edoc = CommandHelp.new(@app, sym)
       head = "# #{edoc.head}" if edoc.head
-      STDERR.puts "    #{command_help}    #{ head }"
+      STDERR.puts "    #{command_help}    #{head}"
     end
 
     STDERR.puts "\n"
 
     STDERR.puts <<~DOC
-    Default options include:
+      Default options include:
 
-        #{binary_name} [ --verbose | -v ]         # run on DEBUG log level
-        #{binary_name} [ --quiet | -q ]           # run on WARN log level
-        #{binary_name} help autocomplete          # print information on autocompletion.
+          #{binary_name} [ --verbose | -v ]         # run on DEBUG log level
+          #{binary_name} [ --quiet | -q ]           # run on WARN log level
+          #{binary_name} help autocomplete          # print information on autocompletion.
 
     DOC
 
