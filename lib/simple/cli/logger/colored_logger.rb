@@ -84,14 +84,16 @@ module Simple::CLI::Logger::ColoredLogger
     if log_level < Logger::INFO
       padding = " " * (90 - msg_length) if msg_length < 90
       msg = "#{msg}#{padding}"
-
-      source = caller[2]
-      source.gsub!( Dir.getwd, "." )
-      source.gsub!( File.expand_path("~"), "~" )
-
-      msg = "#{msg}from #{source}"
+      msg = "#{msg}from #{source_from_caller}"
     end
 
     STDERR.puts msg
+  end
+
+  # The heuristic used to determine the caller is not perfect, but should
+  # do well in most cases.
+  def source_from_caller
+    source = caller.find { |loc| !loc.include? "/simple-cli/lib/simple/cli" }
+    source || caller[2]
   end
 end
