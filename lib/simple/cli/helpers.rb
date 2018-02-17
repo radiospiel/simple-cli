@@ -50,21 +50,20 @@ module Simple::CLI::Helpers
     end
 
     def sh
-      STDERR.puts "> #{self}"
+      ::Simple::CLI.logger.info "> #{self}"
       stdout_str, @process_status = Open3.capture2(*@args, binmode: true)
       stdout_str
     end
 
     def run
-      STDERR.puts "> #{self}"
-      rv = if @args.length > 1
-             system to_s
-           else
-             system @args.first
-           end
-
+      ::Simple::CLI.logger.info "> #{self}"
+      if @args.length > 1
+        system to_s
+      else
+        system @args.first
+      end
+    ensure
       @process_status = $?
-      rv
     end
 
     def success?
