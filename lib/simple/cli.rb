@@ -1,6 +1,8 @@
 module Simple; end
 module Simple::CLI; end
 
+require_relative "cli/pp"
+
 require_relative "cli/helpers"
 require_relative "cli/runner"
 require_relative "cli/adapter"
