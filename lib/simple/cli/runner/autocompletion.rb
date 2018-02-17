@@ -31,13 +31,15 @@ module Simple::CLI::Runner::Autocompletion
   end
 
   def autocomplete_subcommand_options(subcommand, cur)
-    completions = if subcommand == "help"
-                    commands.map(&:to_s).map { |s| s.tr("_", ":") } + ["autocomplete"]
-                  else
-                    CommandHelp.option_names(@app, string_to_command(subcommand))
-                  end
-
-    filter_completions completions, prefix: cur
+    if subcommand == "help"
+      completions = commands.map(&:to_s).map { |s| s.tr("_", ":") } + ["autocomplete"]
+      filter_completions completions, prefix: cur
+    elsif cur[0,1] == "-"
+      completions = CommandHelp.option_names(@app, string_to_command(subcommand))
+      filter_completions completions, prefix: cur
+    else
+      Dir.glob "#{cur}*"
+    end
   end
 
   def autocomplete_help
