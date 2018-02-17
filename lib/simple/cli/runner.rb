@@ -26,10 +26,8 @@ class Simple::CLI::Runner
   def extract_default_flags!(args)
     args.reject! do |arg|
       case arg
-      when "-v", "--verbose" then
-        logger.level = Logger::DEBUG
-      when "-q", "--quiet" then
-        logger.level = Logger::WARN
+      when "--verbose", "-v" then logger.level = Logger::DEBUG
+      when "--quiet", "-q"   then logger.level = Logger::WARN
       end
     end
   end
@@ -79,7 +77,7 @@ class Simple::CLI::Runner
   end
 
   def on_exception(e)
-    raise(e) if Simple::CLI::DEBUG
+    raise(e) if Simple::CLI.logger.level == Logger::DEBUG
 
     case e
     when ArgumentError

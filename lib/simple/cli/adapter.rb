@@ -4,4 +4,12 @@ module Simple::CLI::Adapter
 
     Simple::CLI::Runner.run(self, *args)
   end
+
+  def logger=(logger)
+    Simple::CLI.logger = logger
+  end
+
+  def logger
+    Simple::CLI.logger
+  end
 end

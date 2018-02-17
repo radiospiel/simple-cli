@@ -14,6 +14,10 @@ module Simple::CLI::Helpers
     exit 1
   end
 
+  def logger
+    ::Simple::CLI.logger
+  end
+
   def sh!(cmd, *args)
     command = Command.new(cmd, *args)
     result = command.sh

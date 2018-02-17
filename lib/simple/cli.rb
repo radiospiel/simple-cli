@@ -6,19 +6,12 @@ require_relative "cli/runner"
 require_relative "cli/adapter"
 require_relative "cli/logger"
 
-require "pp"
-
 module Simple::CLI
-  DEBUG = true
+  extend ::Simple::CLI::Logger
 
   def self.included(base)
     base.extend(::Simple::CLI::Adapter)
     base.include(::Simple::CLI::Helpers)
-  end
-
-  extend ::Simple::CLI::Logger
-  def logger
-    Simple::CLI::Logger.logger
   end
 
   # Simple::CLI.run! is called from Runner.run. It is called with a method

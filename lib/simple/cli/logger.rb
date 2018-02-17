@@ -1,22 +1,23 @@
+module Simple::CLI::Logger
+end
+
 require "logger"
 
+require_relative "logger/adapter"
+require_relative "logger/colored_logger"
+
 module Simple::CLI::Logger
-  def logger=(logger)
-    @logger = logger
+  def logger
+    @logger ||= Adapter.new(default_logger)
   end
 
-  def logger
-    @logger ||= build_default_logger
+  def logger=(logger)
+    @logger = Adapter.new(logger)
   end
 
   private
 
-  def build_default_logger
-    logger = Logger.new(STDOUT)
-    logger.formatter = proc do |severity, _datetime, _progname, msg|
-      "#{severity}: #{msg}\n"
-    end
-    logger.level = Logger::INFO
-    logger
+  def default_logger
+    STDERR.isatty ? ColoredLogger : ::Logger.new(STDERR)
   end
 end
