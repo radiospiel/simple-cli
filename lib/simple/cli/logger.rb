@@ -18,6 +18,8 @@ module Simple::CLI::Logger
   private
 
   def default_logger
-    STDERR.isatty ? ColoredLogger : ::Logger.new(STDERR)
+    logger = STDERR.isatty ? ColoredLogger : ::Logger.new(STDERR)
+    logger.level = ::Logger::INFO
+    logger
   end
 end
