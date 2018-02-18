@@ -144,6 +144,7 @@ class Simple::CLI::Runner
       command_help = command_helps.fetch(sym)
       command_help = format("%-#{max_command_helps_length}s", command_help)
       edoc = CommandHelp.new(@app, sym)
+      next if !edoc.head && logger.level != ::Logger::DEBUG
       head = "# #{edoc.head}" if edoc.head
       STDERR.puts "    #{command_help}    #{head}"
     end
@@ -153,10 +154,11 @@ class Simple::CLI::Runner
     STDERR.puts <<~DOC
       Default options include:
 
-          #{binary_name} [ --verbose | -v ]         # run on DEBUG log level
-          #{binary_name} [ --quiet | -q ]           # run on WARN log level
-          #{binary_name} help [ subcommand ]        # print help on a specific subcommand
-          #{binary_name} help autocomplete          # print information on autocompletion.
+          #{binary_name} [ --verbose | -v ]                                                                       # run on DEBUG log level
+          #{binary_name} [ --quiet | -q ]                                                                         # run on WARN log level
+          #{binary_name} help [ subcommand ]                                                                      # print help on a specific subcommand
+          #{binary_name} help autocomplete                                                                        # print information on autocompletion.
+          #{binary_name} help -v                                                                                  # show help for internal commands as well
 
     DOC
 
