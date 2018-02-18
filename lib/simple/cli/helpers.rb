@@ -18,6 +18,17 @@ module Simple::CLI::Helpers
     ::Simple::CLI.logger
   end
 
+  SSH = "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+
+  def ssh_command(host, user: nil)
+    host = "#{user}@#{host}" if user
+    "#{SSH} #{host}"
+  end
+
+  def ssh!(target, command, user: nil)
+    sys! "#{ssh_command(target, user: user)} #{command}"
+  end
+
   def sh!(cmd, *args)
     command = Command.new(cmd, *args)
     result = command.sh
