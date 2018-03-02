@@ -134,33 +134,56 @@ class Simple::CLI::Runner
   end
 
   def help!
-    STDERR.puts "Usage:\n\n"
+    # collect help information on individual comments; when not on DEBUG
+    # level skipping the commands that don't jave a command help.
     command_helps = commands.inject({}) do |hsh, sym|
+      edoc = CommandHelp.new(@app, sym)
+      next hsh if !edoc.head && logger.level != ::Logger::DEBUG
+
       hsh.update sym => help_for_command(sym)
     end
-    max_command_helps_length = command_helps.values.map(&:length).max
 
-    commands.sort.each do |sym|
-      command_help = command_helps.fetch(sym)
-      command_help = format("%-#{max_command_helps_length}s", command_help)
-      edoc = CommandHelp.new(@app, sym)
-      next if !edoc.head && logger.level != ::Logger::DEBUG
-      head = "# #{edoc.head}" if edoc.head
-      STDERR.puts "    #{command_help}    #{head}"
+    # build a lambda which prints a help line with nice formatting
+    max_length = command_helps.values.map(&:length).max
+    print_help_line = lambda do |cmd, description|
+      if description
+        STDERR.puts format("    %-#{max_length}s    # %s", cmd, description)
+      else
+        STDERR.puts format("    %-#{max_length}s", cmd)
+      end
     end
 
-    STDERR.puts "\n"
+    # print help for commands
+    STDERR.puts "Usage:\n\n"
+
+    command_helps.keys.sort.each do |sym|
+      command_help = command_helps[sym]
+      edoc = CommandHelp.new(@app, sym)
+      print_help_line.call command_help, edoc.head
+    end
+
+    # print help for default commands
 
     STDERR.puts <<~DOC
+
       Default options include:
 
-          #{binary_name} [ --verbose | -v ]                                                                       # run on DEBUG log level
-          #{binary_name} [ --quiet | -q ]                                                                         # run on WARN log level
-          #{binary_name} help [ subcommand ]                                                                      # print help on a specific subcommand
-          #{binary_name} help autocomplete                                                                        # print information on autocompletion.
-          #{binary_name} help -v                                                                                  # show help for internal commands as well
+    DOC
+
+    print_help_line.call "#{binary_name} [ --verbose | -v ]", "run on DEBUG log level"
+    print_help_line.call "#{binary_name} [ --quiet | -q ]", "run on WARN log level"
+
+    STDERR.puts <<~DOC
+
+      Other commands:
 
     DOC
+
+    print_help_line.call "#{binary_name} help [ subcommand ]", "print help on a specific subcommand"
+    print_help_line.call "#{binary_name} help -v", "show help for internal commands as well"
+    print_help_line.call "#{binary_name} help autocomplete", "print information on autocompletion."
+
+    STDERR.puts "\n"
 
     exit 1
   end
