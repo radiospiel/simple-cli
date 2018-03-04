@@ -74,6 +74,7 @@ module Simple::CLI::Helpers
     def sh
       ::Simple::CLI.logger.info "> #{self}"
       stdout_str, @process_status = Open3.capture2(*@args, binmode: true)
+      $? = @process_status
       stdout_str
     end
 
