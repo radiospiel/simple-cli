@@ -29,17 +29,6 @@ module Simple::CLI::Helpers
     sys! "#{ssh_command(target, user: user)} #{command}"
   end
 
-  def sh(cmd, *args)
-    command = Command.new(cmd, *args)
-    result = command.sh
-    first_line, more = result.split("\n", 2)
-    if more == ""
-      first_line
-    else
-      result
-    end
-  end
-
   def sh!(cmd, *args)
     command = Command.new(cmd, *args)
     result = command.sh
@@ -74,7 +63,6 @@ module Simple::CLI::Helpers
     def sh
       ::Simple::CLI.logger.info "> #{self}"
       stdout_str, @process_status = Open3.capture2(*@args, binmode: true)
-      $? = @process_status
       stdout_str
     end
 
