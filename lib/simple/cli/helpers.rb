@@ -29,6 +29,17 @@ module Simple::CLI::Helpers
     sys! "#{ssh_command(target, user: user)} #{command}"
   end
 
+  def sh(cmd, *args)
+    command = Command.new(cmd, *args)
+    result = command.sh
+    first_line, more = result.split("\n", 2)
+    if more == ""
+      first_line
+    else
+      result
+    end
+  end
+
   def sh!(cmd, *args)
     command = Command.new(cmd, *args)
     result = command.sh
