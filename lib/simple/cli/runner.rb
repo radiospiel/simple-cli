@@ -32,6 +32,8 @@ class Simple::CLI::Runner
     end
   end
 
+  attr_accessor :subcommand
+
   def run(*args)
     extract_default_flags!(args)
 
@@ -46,6 +48,7 @@ class Simple::CLI::Runner
     elsif command == :autocomplete_bash
       autocomplete_bash(*args)
     elsif commands.include?(command)
+      self.subcommand = command
       @instance.run! command, *args_with_options(args)
     else
       help!
@@ -70,6 +73,8 @@ class Simple::CLI::Runner
 
       #{edoc.full}
      MSG
+
+     exit 1
   end
 
   def logger
@@ -82,7 +87,11 @@ class Simple::CLI::Runner
     case e
     when ArgumentError
       logger.error "#{e}\n\n"
-      help!
+      if subcommand
+        help_subcommand! subcommand
+      else
+        help!
+      end
     else
       msg = e.to_s
       msg += " (#{e.class.name})" unless $!.class.name == "RuntimeError"
