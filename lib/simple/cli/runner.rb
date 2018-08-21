@@ -84,9 +84,12 @@ class Simple::CLI::Runner
   def on_exception(e)
     raise(e) if Simple::CLI.logger.level == Logger::DEBUG
 
+    verbosity_hint = "Backtraces are currently silenced. Run with --verbose to see backtraces."
+
     case e
     when ArgumentError
       logger.error "#{e}\n\n"
+      logger.warn verbosity_hint
       if subcommand
         help_subcommand! subcommand
       else
@@ -96,6 +99,7 @@ class Simple::CLI::Runner
       msg = e.to_s
       msg += " (#{e.class.name})" unless $!.class.name == "RuntimeError"
       logger.error msg
+      logger.warn verbosity_hint
       exit 2
     end
   end
