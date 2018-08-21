@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    simple-cli (0.2.8)
+    simple-cli (0.2.9)
 
 GEM
   remote: https://rubygems.org/

@@ -88,7 +88,7 @@ class Simple::CLI::Runner
 
     case e
     when ArgumentError
-      logger.error "#{e}\n\n"
+      logger.error e.message
       logger.warn verbosity_hint
       if subcommand
         help_subcommand! subcommand
@@ -96,7 +96,7 @@ class Simple::CLI::Runner
         help!
       end
     else
-      msg = e.to_s
+      msg = e.message
       msg += " (#{e.class.name})" unless $!.class.name == "RuntimeError"
       logger.error msg
       logger.warn verbosity_hint
