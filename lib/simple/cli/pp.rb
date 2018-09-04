@@ -1,3 +1,5 @@
+# rubocop:disable Lint/HandleExceptions
+
 require "pp"
 
 begin

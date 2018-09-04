@@ -36,7 +36,7 @@ module Simple::CLI::Runner::Autocompletion
     if subcommand == "help"
       completions = commands.map(&:to_s).map { |s| s.tr("_", ":") } + ["autocomplete"]
       filter_completions completions, prefix: cur
-    elsif cur && cur[0,1] == "-"
+    elsif cur && cur[0, 1] == "-"
       completions = CommandHelp.option_names(@app, string_to_command(subcommand))
       completions += DEFAULT_OPTIONS
 

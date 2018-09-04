@@ -74,7 +74,7 @@ class Simple::CLI::Runner
       #{edoc.full}
      MSG
 
-     exit 1
+    exit 1
   end
 
   def logger

@@ -1,3 +1,6 @@
+# rubocop:disable Metrics/AbcSize
+# rubocop:disable Metrics/MethodLength
+
 class Simple::CLI::Logger::Adapter
   def initialize(logger)
     @logger = logger
@@ -17,6 +20,8 @@ class Simple::CLI::Logger::Adapter
   end
 
   def benchmark(msg, *args, &block)
+    _ = block
+
     severity = :warn
     if msg.is_a?(Symbol)
       severity, msg = msg, args.shift

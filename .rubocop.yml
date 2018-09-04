@@ -42,3 +42,30 @@ Lint/MissingCopEnableDirective:
 
 Style/RegexpLiteral:
   Enabled: false
+
+Style/PercentLiteralDelimiters:
+  Enabled: false
+
+Style/FormatStringToken:
+  Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Style/ParallelAssignment:
+  Enabled: false
+
+Style/FormatString:
+  Enabled: false
+
+Style/SymbolArray:
+  Enabled: false
+
+Layout/SpaceInsideArrayLiteralBrackets:
+  Enabled: false
+
+Style/TrailingCommaInLiteral:
+  Enabled: false
+
+Performance/Caller:
+  Enabled: false

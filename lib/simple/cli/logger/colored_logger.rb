@@ -1,7 +1,10 @@
+# rubocop:disable Metrics/AbcSize
+# rubocop:disable Metrics/MethodLength
+
 module Simple::CLI::Logger::ColoredLogger
   extend self
 
-  attr :level, true
+  attr_accessor :level
 
   COLORS = {
     clear:      "\e[0m",  # Embed in a String to clear all previous ANSI sequences.
@@ -25,13 +28,14 @@ module Simple::CLI::Logger::ColoredLogger
     on_white:   "\e[47m"  # Set the terminal's background ANSI color to white.
   }
 
+  # rubocop:disable Style/ClassVars
   @@started_at = Time.now
 
   MESSAGE_COLOR = {
-    :info     => :cyan,
-    :warn     => :yellow,
-    :error    => :red,
-    :success  => :green,
+    info: :cyan,
+    warn: :yellow,
+    error: :red,
+    success: :green,
   }
 
   def debug(msg, *args)
@@ -77,7 +81,7 @@ module Simple::CLI::Logger::ColoredLogger
 
     msg_length = msg.length
 
-    if color = COLORS[MESSAGE_COLOR[sym]]
+    if (color = COLORS[MESSAGE_COLOR[sym]])
       msg = "#{color}#{msg}#{COLORS[:clear]}"
     end
 
