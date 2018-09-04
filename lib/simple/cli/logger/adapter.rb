@@ -3,9 +3,10 @@ class Simple::CLI::Logger::Adapter
     @logger = logger
   end
 
-  def method_missing(*args, &block)
-    @logger.send *args, &block
-  end
+  LOGGER_METHODS = [ :debug, :info, :warn, :error, :fatal, :level, :level= ]
+
+  extend Forwardable
+  delegate LOGGER_METHODS => :@logger
 
   def success(msg, *args, &block)
     if @logger.respond_to?(:success)
