@@ -1,5 +1,6 @@
 # rubocop:disable Metrics/AbcSize
 # rubocop:disable Metrics/MethodLength
+require "forwardable"
 
 class Simple::CLI::Logger::Adapter
   def initialize(logger)
