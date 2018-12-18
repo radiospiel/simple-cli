@@ -30,7 +30,7 @@ Gem::Specification.new do |gem|
   # optional gems (required by some of the parts)
 
   # development gems
-  gem.add_development_dependency 'rake', '~> 11'
+  gem.add_development_dependency 'rake', '~> 12'
   gem.add_development_dependency 'rspec', '~> 3.7'
   gem.add_development_dependency 'simplecov', '~> 0'
   gem.add_development_dependency 'rubocop', '= 0.52.1'

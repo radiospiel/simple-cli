@@ -1,4 +1,6 @@
 coverage
 rdoc
 pkg
-log/test.log
+log/*log
+Gemfile.lock
+simple-cli*gem
