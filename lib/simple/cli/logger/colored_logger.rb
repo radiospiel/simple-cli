@@ -97,7 +97,7 @@ module Simple::CLI::Logger::ColoredLogger
   # The heuristic used to determine the caller is not perfect, but should
   # do well in most cases.
   def source_from_caller
-    source = caller.find { |loc| !loc.include? "/simple-cli/lib/simple/cli" }
+    source = caller.find { |loc| !loc.include? "cli/lib/simple/cli" }
     source || caller[2]
   end
 end
