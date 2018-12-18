@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    simple-cli (0.2.9)
+    simple-cli (0.2.12)
 
 GEM
   remote: https://rubygems.org/
@@ -55,4 +55,4 @@ DEPENDENCIES
   simplecov (~> 0)
 
 BUNDLED WITH
-   1.16.2
+   1.17.1
