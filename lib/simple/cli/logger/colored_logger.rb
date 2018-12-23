@@ -38,24 +38,24 @@ module Simple::CLI::Logger::ColoredLogger
     success: :green,
   }
 
-  def debug(msg, *args)
-    log :debug, msg, *args
+  def debug(msg = nil, *args, &block)
+    log :debug, msg, *args, &block
   end
 
-  def info(msg, *args)
-    log :info, msg, *args
+  def info(msg, *args, &block)
+    log :info, msg, *args, &block
   end
 
-  def warn(msg, *args)
-    log :warn, msg, *args
+  def warn(msg, *args, &block)
+    log :warn, msg, *args, &block
   end
 
-  def error(msg, *args)
-    log :error, msg, *args
+  def error(msg, *args, &block)
+    log :error, msg, *args, &block
   end
 
-  def success(msg, *args)
-    log :success, msg, *args
+  def success(msg, *args, &block)
+    log :success, msg, *args, &block
   end
 
   private
@@ -68,10 +68,15 @@ module Simple::CLI::Logger::ColoredLogger
     success:  ::Logger::INFO
   }
 
-  def log(sym, msg, *args)
+  def log(sym, msg, *args, &block)
     log_level = level
     required_log_level = REQUIRED_LOG_LEVELS.fetch(sym)
     return if required_log_level < log_level
+
+    if msg.nil? && args.empty? && block
+      msg = yield
+      return if msg.nil?
+    end
 
     formatted_runtime = "%.3f secs" % (Time.now - @@started_at)
     msg = "[#{formatted_runtime}] #{msg}"
