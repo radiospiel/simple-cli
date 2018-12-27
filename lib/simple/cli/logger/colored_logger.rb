@@ -38,24 +38,24 @@ module Simple::CLI::Logger::ColoredLogger
     success: :green,
   }
 
-  def debug(msg = nil, *args, &block)
-    log :debug, msg, *args, &block
+  def debug(*args, &block)
+    log :debug, *args, &block
   end
 
-  def info(msg, *args, &block)
-    log :info, msg, *args, &block
+  def info(*args, &block)
+    log :info, *args, &block
   end
 
-  def warn(msg, *args, &block)
-    log :warn, msg, *args, &block
+  def warn(*args, &block)
+    log :warn, *args, &block
   end
 
-  def error(msg, *args, &block)
-    log :error, msg, *args, &block
+  def error(*args, &block)
+    log :error, *args, &block
   end
 
-  def success(msg, *args, &block)
-    log :success, msg, *args, &block
+  def success(*args, &block)
+    log :success, *args, &block
   end
 
   private
@@ -68,11 +68,12 @@ module Simple::CLI::Logger::ColoredLogger
     success:  ::Logger::INFO
   }
 
-  def log(sym, msg, *args, &block)
+  def log(sym, *args, &block)
     log_level = level
     required_log_level = REQUIRED_LOG_LEVELS.fetch(sym)
     return if required_log_level < log_level
 
+    msg = args.shift
     if msg.nil? && args.empty? && block
       msg = yield
       return if msg.nil?
