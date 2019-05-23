@@ -1,5 +1,7 @@
 # rubocop:disable Metrics/AbcSize
 # rubocop:disable Metrics/MethodLength
+# rubocop:disable Metrics/CyclomaticComplexity
+# rubocop:disable Metrics/PerceivedComplexity
 
 module Simple::CLI::Logger::ColoredLogger
   extend self
@@ -56,6 +58,22 @@ module Simple::CLI::Logger::ColoredLogger
 
   def success(*args, &block)
     log :success, *args, &block
+  end
+
+  def debug?
+    level <= REQUIRED_LOG_LEVELS[:debug]
+  end
+
+  def info?
+    level <= REQUIRED_LOG_LEVELS[:info]
+  end
+
+  def warn?
+    level <= REQUIRED_LOG_LEVELS[:warn]
+  end
+
+  def error?
+    level <= REQUIRED_LOG_LEVELS[:error]
   end
 
   private
