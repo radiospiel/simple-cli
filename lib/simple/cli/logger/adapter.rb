@@ -7,7 +7,11 @@ class Simple::CLI::Logger::Adapter
     @logger = logger
   end
 
-  LOGGER_METHODS = [ :debug, :info, :warn, :error, :fatal, :level, :level= ]
+  LOGGER_METHODS = [
+    :debug, :info, :warn, :error, :fatal,
+    :debug?, :info?, :warn?, :error?, :fatal?,
+    :level, :level=
+  ]
 
   extend Forwardable
   delegate LOGGER_METHODS => :@logger
