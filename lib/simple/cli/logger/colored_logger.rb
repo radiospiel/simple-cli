@@ -122,6 +122,12 @@ module Simple::CLI::Logger::ColoredLogger
   # do well in most cases.
   def source_from_caller
     source = caller.find { |loc| loc !~ /simple-cli.*\/lib\/simple\/cli/ }
-    source || caller[2]
+    source ||= caller[2]
+    source = source[(wd.length + 1)..-1] if source.start_with?(wd)
+    source
+  end
+
+  def wd
+    @wd ||= Dir.getwd
   end
 end
