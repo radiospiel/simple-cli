@@ -2,6 +2,8 @@
 # rubocop:disable Metrics/CyclomaticComplexity
 # rubocop:disable Metrics/MethodLength
 
+require_relative "./module_ex"
+
 class Simple::CLI::Runner::CommandHelp
   def self.option_names(app, subcommand)
     new(app, subcommand).option_names
@@ -9,10 +11,12 @@ class Simple::CLI::Runner::CommandHelp
     []
   end
 
-  def initialize(mod, method)
-    raise(ArgumentError, "#{method.inspect} should be a Symbol") unless method.is_a?(Symbol)
-    @mod = mod
-    @method = method
+  def initialize(mod, method_id)
+    raise(ArgumentError, "#{method_id.inspect} should be a Symbol") unless method_id.is_a?(Symbol)
+
+    @method_id            = method_id
+    @method               = mod.instance_method(@method_id)
+    @method_parameters_ex = mod.method_parameters_ex(@method_id)
   end
 
   # First line of the help as read from the method comments.
@@ -26,9 +30,7 @@ class Simple::CLI::Runner::CommandHelp
   end
 
   def option_names
-    method = @mod.instance_method(@method)
-
-    option_names = method.parameters.map do |mode, name|
+    option_names = @method_parameters_ex.map do |mode, name, _|
       case mode
       when :key     then name
       when :keyreq  then name
@@ -42,20 +44,27 @@ class Simple::CLI::Runner::CommandHelp
 
   # A help string constructed from the commands method signature.
   def interface(binary_name, command_name)
-    method = @mod.instance_method(@method)
-
-    options = []
-    args = []
-
-    method.parameters.each do |mode, name|
+    args = @method_parameters_ex.map do |mode, name|
       case mode
-      when :req     then args << "<#{name}>"
-      when :key     then options << "[ --#{name}[=<#{name}>] ]"
-      when :keyreq  then options << "--#{name}[=<#{name}>]"
-      when :opt     then args << "[ <#{name}> ]"
-      when :rest    then args << "[ <#{name}> .. ]"
+      when :req   then "<#{name}>"
+      when :opt   then "[ <#{name}> ]"
+      when :rest  then "[ <#{name}> .. ]"
       end
-    end
+    end.compact
+
+    options = @method_parameters_ex.map do |mode, name, default_value|
+      case mode
+      when :key     then
+        case default_value
+        when false  then  "[ --#{name} ]"
+        when true   then  "[ --no-#{name} ]"
+        when nil    then  "[ --#{name}=<#{name}> ]"
+        else              "[ --#{name}=#{default_value} ]"
+        end
+      when :keyreq  then
+        "--#{name}=<#{name}>"
+      end
+    end.compact
 
     help = "#{binary_name} #{command_to_string(command_name)}"
     help << " #{options.join(' ')}" unless options.empty?
@@ -71,7 +80,7 @@ class Simple::CLI::Runner::CommandHelp
 
   def comments
     @comments ||= begin
-      file, line = @mod.instance_method(@method).source_location
+      file, line = @method.source_location
       extract_comments(from: parsed_source(file), before_line: line)
     end
   end
