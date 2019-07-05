@@ -26,6 +26,9 @@ module Simple::CLI::Helpers
     MSG
 
     STDIN.gets
+  rescue Interrupt
+    logger.error "Cancelled by user"
+    exit 1
   end
 
   SSH = "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
