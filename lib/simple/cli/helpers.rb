@@ -18,6 +18,16 @@ module Simple::CLI::Helpers
     ::Simple::CLI.logger
   end
 
+  def confirm(msg)
+    STDERR.puts <<~MSG
+      #{msg}
+
+      Press return to continue, ^C to cancel...
+    MSG
+
+    STDIN.gets
+  end
+
   SSH = "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 
   def ssh_command(host, user: nil)
