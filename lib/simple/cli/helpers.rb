@@ -18,7 +18,7 @@ module Simple::CLI::Helpers
     ::Simple::CLI.logger
   end
 
-  def confirm(msg)
+  def confirm!(msg)
     STDERR.puts <<~MSG
       #{msg}
 
