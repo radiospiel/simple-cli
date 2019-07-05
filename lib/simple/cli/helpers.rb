@@ -20,7 +20,7 @@ module Simple::CLI::Helpers
 
   def confirm!(msg)
     STDERR.puts <<~MSG
-      #{msg}
+      #{msg.chomp}
 
       Press return to continue, ^C to cancel...
     MSG
