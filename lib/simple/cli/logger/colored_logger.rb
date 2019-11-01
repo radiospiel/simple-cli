@@ -56,6 +56,11 @@ module Simple::CLI::Logger::ColoredLogger
     log :error, *args, &block
   end
 
+  def fatal(*args, &block)
+    log :error, *args, &block
+    exit 1
+  end
+
   def success(*args, &block)
     log :success, *args, &block
   end
