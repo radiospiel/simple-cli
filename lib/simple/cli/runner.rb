@@ -8,13 +8,10 @@ class Simple::CLI::Runner
 end
 
 require_relative "runner/command_help"
-require_relative "runner/autocompletion"
 
 # A Runner object manages running a CLI application module with a set
 # of string arguments (usually taken from ARGV)
 class Simple::CLI::Runner
-  include Autocompletion
-
   def self.run(app, *args)
     new(app).run(*args)
   end
@@ -51,10 +48,6 @@ class Simple::CLI::Runner
 
     if command == :help
       do_help!(*args)
-    elsif command == :autocomplete
-      autocomplete(*args)
-    elsif command == :autocomplete_bash
-      autocomplete_bash(*args)
     elsif commands.include?(command)
       self.subcommand = command
       @instance.run! command, *args_with_options(args)
@@ -155,11 +148,6 @@ class Simple::CLI::Runner
   end
 
   def help_for_command(sym)
-    if sym == "autocomplete"
-      autocomplete_help
-      return
-    end
-
     cmd = string_to_command(sym)
     CommandHelp.new(@app, cmd).interface(binary_name, cmd, include_subcommand: has_subcommands?)
   end
@@ -216,7 +204,6 @@ class Simple::CLI::Runner
 
     print_help_line.call "#{binary_name} help [ subcommand ]", "print help on a specific subcommand"
     print_help_line.call "#{binary_name} help -v", "show help for internal commands as well"
-    print_help_line.call "#{binary_name} help autocomplete", "print information on autocompletion."
 
     STDERR.puts "\n"
 
