@@ -12,7 +12,7 @@ module Simple::CLI::Adapter
   def run!(main_command = nil)
     runner = Simple::CLI::Runner.new(self)
     
-    if main_command && ARGV.include?("--help")
+    if main_command && (ARGV.include?("--help") || ARGV.include?("-h"))
       runner.help(main_command)
     elsif main_command
       runner.run(main_command, *ARGV)

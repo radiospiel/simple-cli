@@ -85,6 +85,7 @@ class Simple::CLI::Runner
 
         Default options include:
 
+        #{binary_name} [ --help | -h ]                  ... print this help
         #{binary_name} [ --verbose | -v ]               ... run on DEBUG log level
         #{binary_name} [ --quiet | -q ]                 ... run on WARN log level
       MSG
