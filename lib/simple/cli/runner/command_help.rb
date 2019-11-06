@@ -43,7 +43,7 @@ class Simple::CLI::Runner::CommandHelp
   end
 
   # A help string constructed from the commands method signature.
-  def interface(binary_name, command_name)
+  def interface(binary_name, command_name, include_subcommand: false)
     args = @method_parameters_ex.map do |mode, name|
       case mode
       when :req   then "<#{name}>"
@@ -66,7 +66,8 @@ class Simple::CLI::Runner::CommandHelp
       end
     end.compact
 
-    help = "#{binary_name} #{command_to_string(command_name)}"
+    help = "#{binary_name}"
+    help << " #{command_to_string(command_name)}" if include_subcommand
     help << " #{options.join(' ')}" unless options.empty?
     help << " #{args.join(' ')}" unless args.empty?
     help

@@ -34,6 +34,14 @@ class Simple::CLI::Runner
 
   attr_accessor :subcommand
 
+  def help(command)
+    if command
+      run "help", command
+    else
+      run "help"
+    end
+  end
+
   def run(*args)
     extract_default_flags!(args)
 
@@ -57,6 +65,10 @@ class Simple::CLI::Runner
     on_exception(e)
   end
 
+  def has_subcommands?
+    commands.length > 1
+  end
+
   def do_help!(subcommand = nil)
     if !subcommand
       help!
@@ -72,8 +84,18 @@ class Simple::CLI::Runner
       #{help_for_command(subcommand)}
 
       #{edoc.full}
-     MSG
+    MSG
 
+    unless has_subcommands?
+
+      STDERR.puts <<~MSG
+
+        Default options include:
+
+        #{binary_name} [ --verbose | -v ]               ... run on DEBUG log level
+        #{binary_name} [ --quiet | -q ]                 ... run on WARN log level
+      MSG
+    end
     exit 1
   end
 
@@ -139,7 +161,7 @@ class Simple::CLI::Runner
     end
 
     cmd = string_to_command(sym)
-    CommandHelp.new(@app, cmd).interface(binary_name, cmd)
+    CommandHelp.new(@app, cmd).interface(binary_name, cmd, include_subcommand: has_subcommands?)
   end
 
   def binary_name
