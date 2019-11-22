@@ -66,7 +66,7 @@ class Simple::CLI::Runner::CommandHelp
       end
     end.compact
 
-    help = "#{binary_name}"
+    help = binary_name.to_s
     help << " #{command_to_string(command_name)}" if include_subcommand
     help << " #{options.join(' ')}" unless options.empty?
     help << " #{args.join(' ')}" unless args.empty?
