@@ -1,7 +1,6 @@
 require "open3"
 
-# Helpers are mixed into all CLI modules. They implement the following methods,
-# mostly to help with integrating external commands:
+# This module defines various helpers that might be useful for many CLI applications.
 #
 # - sys
 # - sys!
@@ -9,6 +8,9 @@ require "open3"
 # - die!
 #
 module Simple::CLI::Helpers
+  # The methods here must be private, lest they not show up as subcommands.
+  private
+
   def die!(msg)
     STDERR.puts msg
     exit 1

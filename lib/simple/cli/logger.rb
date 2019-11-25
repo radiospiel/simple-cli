@@ -12,7 +12,9 @@ module Simple::CLI::Logger
   end
 
   def logger=(logger)
+    old_log_level = logger.level
     @logger = Adapter.new(logger)
+    @logger.level = old_log_level
   end
 
   private

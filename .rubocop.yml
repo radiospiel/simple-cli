@@ -22,6 +22,9 @@ Style/StringLiterals:
   EnforcedStyle: double_quotes
   ConsistentQuotesInMultiline: false
 
+Style/StringLiteralsInInterpolation:
+  EnforcedStyle: double_quotes
+
 Style/ClassAndModuleChildren:
   Enabled: false
 
