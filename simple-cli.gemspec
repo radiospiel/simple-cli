@@ -5,11 +5,10 @@
 
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'simple/cli/version'
 
 Gem::Specification.new do |gem|
   gem.name     = "simple-cli"
-  gem.version  = Simple::CLI::VERSION
+  gem.version  = File.read("VERSION")
 
   gem.authors  = [ "radiospiel", "mediapeers GmbH" ]
   gem.email    = "eno@radiospiel.org"
