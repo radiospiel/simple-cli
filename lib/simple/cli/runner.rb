@@ -8,7 +8,7 @@ module Simple::CLI
       action_name = H.command_to_action(command)
       Simple::Service.with_context do
         flags = extract_flags!(args)
-        ::Simple::Service.invoke(service, action_name, *args, **flags)
+        ::Simple::Service.invoke(service, action_name, args: args, flags: flags)
       end
     end
 
@@ -31,7 +31,7 @@ module Simple::CLI
         flag_name = "no_#{flag_name}" if $4 && $1
         value = $4 || ($1 ? false : true)
 
-        flags[flag_name.to_sym] = value
+        flags[flag_name] = value
         true
       end
 

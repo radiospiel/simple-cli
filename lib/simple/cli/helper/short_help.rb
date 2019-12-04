@@ -10,7 +10,7 @@ module Simple::CLI
 
       MSG
 
-      subcommands = actions.map { |action| "'" + H.action_to_command(action.name)  + "'" }
+      subcommands = actions.map { |action| "'" + H.action_to_command(action.name) + "'" }
       msg = "Subcommands include #{subcommands.sort.join(", ")}"
       msg += " (and an additional #{hidden_actions.count} internal commands)"
 
