@@ -4,6 +4,8 @@
 # rubocop:disable Metrics/CyclomaticComplexity
 # rubocop:disable Metrics/PerceivedComplexity
 
+require "pathname"
+
 module Simple::CLI::Logger::ColoredLogger
   extend self
 
@@ -118,10 +120,36 @@ module Simple::CLI::Logger::ColoredLogger
     if log_level < Logger::INFO
       padding = " " * (90 - msg_length) if msg_length < 90
       msg = "#{msg}#{padding}"
-      msg = "#{msg}from #{source_from_caller}"
+      msg = "#{msg}from #{shorten_path source_from_caller}"
     end
 
     STDERR.puts msg
+  end
+
+  def shorten_path(path)
+    @pwd  ||= File.join(Dir.getwd, "/")
+    @home ||= File.join(Dir.home, "/")
+
+    path = File.absolute_path(path)
+
+    if path.start_with?(@pwd)
+      path = path[@pwd.length..-1]
+      path = File.join("./", path) if path =~ /\//
+      return path
+    end
+
+    relative_path = relative_path_from_here(path)
+
+    if path.start_with?(@home)
+      path = File.join("~/", path[@home.length..-1])
+    end
+
+    path.length < relative_path.length ? path : relative_path
+  end
+
+  def relative_path_from_here(absolute_path)
+    @pwd_pathname ||= Pathname.new(@pwd)
+    Pathname.new(absolute_path).relative_path_from(@pwd_pathname).to_s
   end
 
   # The heuristic used to determine the caller is not perfect, but should
