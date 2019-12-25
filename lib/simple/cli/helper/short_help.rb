@@ -1,3 +1,5 @@
+# rubocop:disable Metrics/AbcSize
+
 module Simple::CLI
   module Helper
     def short_help!(service)

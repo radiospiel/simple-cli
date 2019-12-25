@@ -5,6 +5,7 @@
 module Simple::CLI
   module Helper
     def help_on_command!(service, command, verbose:)
+      _ = verbose
       action = H.action_for_command(service, command)
 
       parts = [

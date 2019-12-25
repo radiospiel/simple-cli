@@ -1,3 +1,7 @@
+# rubocop:disable Metrics/CyclomaticComplexity
+# rubocop:disable Metrics/MethodLength
+# rubocop:disable Metrics/PerceivedComplexity
+
 module Simple::CLI
   module Runner
     extend self

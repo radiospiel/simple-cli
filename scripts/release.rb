@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+# rubocop:disable Style/GlobalVars
+
 # -- helpers ------------------------------------------------------------------
 
 def sys(cmd)
