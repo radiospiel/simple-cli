@@ -36,7 +36,7 @@ module Simple::CLI
 
       options = action.parameters.select(&:keyword?).map do |param|
         if param.required?
-          "--#{name}=<#{name}>"
+          "--#{param.name}=<#{param.name}>"
         else
           case param.default_value
           when false  then  "[ --#{param.name} ]"
