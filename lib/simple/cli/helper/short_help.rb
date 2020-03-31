@@ -8,16 +8,32 @@ module Simple::CLI
       actions, hidden_actions = actions.partition(&:short_description)
 
       STDERR.puts <<~MSG
-        #{H.binary_name} <command> [ options... ]
+        #{H.binary_name} <subcommand> [ options... ]
 
       MSG
 
-      subcommands = actions.map { |action| "'" + H.action_to_command(action.name) + "'" }
-      msg = "Subcommands include #{subcommands.sort.join(", ")}"
-      msg += " (and an additional #{hidden_actions.count} internal commands)"
+      # if we don't have too many subcommands we print them here. If not, we only print their names
+      # and mention the help command.
+      if actions.count < 1
+        STDERR.puts <<~MSG
+          Subcommands:
+
+          #{format_usages usages(service, verbose: false), prefix: "    "}
+
+        MSG
+      else
+        subcommands = actions.map { |action| "'" + H.action_to_command(action.name) + "'" }
+        msg = "Subcommands include #{subcommands.sort.join(", ")}"
+        msg += " (and, in addition, #{hidden_actions.count} internal commands)" if hidden_actions.count > 0
+
+        STDERR.puts <<~MSG
+          #{msg}. Run with "-h" for more details.
+
+        MSG
+      end
 
       STDERR.puts <<~MSG
-        #{msg}. Default options and commands include:
+        Default options and subcommands include:
 
         #{format_usages default_usages(service, verbose: false), prefix: "    "}
 

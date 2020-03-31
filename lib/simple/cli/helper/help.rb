@@ -2,13 +2,13 @@ module Simple::CLI
   module Helper
     def help!(service, verbose:)
       STDERR.puts <<~MSG
-        #{H.binary_name} <command> [ options... ]
+        #{H.binary_name} <subcommand> [ options... ]
 
-        Commands:
+        Subcommands:
 
         #{format_usages usages(service, verbose: verbose), prefix: "    "}
 
-        Default options and commands include:
+        Default options and subcommands include:
 
         #{format_usages default_usages(service, verbose: verbose), prefix: "    "}
 
