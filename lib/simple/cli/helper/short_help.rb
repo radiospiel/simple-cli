@@ -14,7 +14,7 @@ module Simple::CLI
 
       # if we don't have too many subcommands we print them here. If not, we only print their names
       # and mention the help command.
-      if actions.count < 1
+      if actions.count < 8
         STDERR.puts <<~MSG
           Subcommands:
 
