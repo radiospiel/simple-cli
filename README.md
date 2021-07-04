@@ -30,3 +30,22 @@ These are the follow
   
 ## Example
 
+An example can be found in [./doc/examples/ex1](./doc/examples/ex1)
+
+## Use logging
+
+`Simple::CLI` provides a logger instance. This is configured to write to STDERR, and to use colors for different log levels. By default the logger is configured to run on INFO log levels. With the `--quiet` flag the logger is running at WARN log level; the `--verbose` command line flag runs the logger on DEBUG log level, and also includes the source position of calling log.
+
+## Updating to version 0.3
+
+While the 0.2 version is still perfectly functional, its last version was released on Jul 5th, 2019. Development on the 0.3 versions started with some refactoring: the logic that inspects a subcommand invocation and determines its argument names and default types has been moved to a `simple-services' gem.
+
+To upgrade from simple-cli version 0.2 to version 0.3 all you typically have to do is to replace the
+
+    YourApp::CLI.run!(*ARGV)
+
+invocation with
+
+    Simple::CLI.run!(YourApp::CLI)
+
+This [commit](https://github.com/radiospiel/simple-cli/commit/3e75bd6fb913a2b458269c91597c42cabac226b4) provides an example of doing that.
