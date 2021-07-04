@@ -3,7 +3,7 @@ require 'bundler/inline'
 
 gemfile do
   source 'https://rubygems.org'
-  gem "simple-cli", '~> 0.2', path: "../../.."
+  gem "simple-cli", '~> 0.3', path: "../../.."
 end
 
 module Ex1; end
@@ -37,4 +37,5 @@ module Ex1::CLI
   end
 end
 
-Ex1::CLI.run!(*ARGV)
+$0 = "ex1"
+Simple::CLI.run!(Ex1::CLI)
