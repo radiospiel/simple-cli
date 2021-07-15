@@ -118,10 +118,25 @@ module Simple::CLI::Logger::ColoredLogger
     STDERR.puts msg
   end
 
-  # The heuristic used to determine the caller is not perfect, but should
-  # do well in most cases.
+  # [TODO] The heuristic used to determine the caller is not perfect.
+  # Maybe we'll find a better solution; but for now this has to do.
   def source_from_caller
-    source = caller.find { |loc| loc !~ /simple-cli.*\/lib\/simple\/cli/ }
+    source = caller.find do |loc|
+      # skip this gem
+      next false if loc =~ /\/lib\/simple\/cli\//
+
+      # skip forwardable from Ruby stdlib
+      next false if loc =~ /\/forwardable.rb\:/
+
+      # skip simple-sql
+      next false if loc =~ /\/lib\/simple\/sql\b/
+
+      # skip lib/postjob/queue/postgres/checked_sql.rb
+      next false if loc =~ %r{lib/postjob/queue/postgres/checked_sql.rb}
+
+      true
+    end
+
     source ||= caller[2]
     source = source[(wd.length + 1)..-1] if source.start_with?(wd)
     source
