@@ -13,6 +13,7 @@ require_relative "cli/adapter"
 require_relative "cli/logger"
 require_relative "cli/on_exception"
 require_relative "cli/helpers"
+require_relative "cli/deprecations"
 
 require "simple/service"
 
@@ -29,6 +30,11 @@ module Simple::CLI
   def self.included(base)
     base.include(::Simple::Service)
     base.include(::Simple::CLI::Helpers)
+    
+    # When going from 0.2 to 0.3 we removed some helpers that originally had been
+    # mixed into the target CLI module. The ::Simple::CLI::Deprecations module
+    # makes sure to print deprecation warnings.
+    base.extend(::Simple::CLI::Deprecations)
   end
 
   # Runs the service with the current command line arguments.
