@@ -87,6 +87,7 @@ module Simple::CLI
     # Run service.
     Runner.run! service, options.command, *args, verbose: options.verbose?
   rescue ::Simple::Service::ArgumentError
+    STDERR.puts "#{$!}\n\n"
     Helper.help_on_command! service, options.command, verbose: false
   rescue StandardError => e
     on_exception(e)

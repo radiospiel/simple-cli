@@ -27,5 +27,5 @@ Gem::Specification.new do |gem|
   gem.required_ruby_version = '~> 2.3'
 
   # optional gems (required by some of the parts)
-  gem.add_dependency "simple-service", "~> 0.1.5"
+  gem.add_dependency "simple-service", "~> 0.2.1"
 end

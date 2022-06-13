@@ -10,10 +10,8 @@ module Simple::CLI
       _ = verbose
 
       action_name = H.command_to_action(command)
-      Simple::Service.with_context do
-        flags = extract_flags!(args)
-        ::Simple::Service.invoke(service, action_name, args: args, flags: flags)
-      end
+      flags = extract_flags!(args)
+      ::Simple::Service.invoke(service, action_name, args: args, flags: flags)
     end
 
     private
