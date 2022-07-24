@@ -93,11 +93,16 @@ module Simple::CLI
       You probably run the command with invalid arguments; to learn more run
       
         #{$0} help #{options.command}
-        
-      Error location:
-      
-      - #{$!.backtrace[0,5].join("\n- ")}
     MSG
+
+    if options.verbose?
+      STDERR.puts <<~MSG
+
+        Error location:
+
+        - #{$!.backtrace[0,5].join("\n- ")}
+      MSG
+    end
   rescue StandardError => e
     on_exception(e)
     exit 3
