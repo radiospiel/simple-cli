@@ -24,8 +24,8 @@ Gem::Specification.new do |gem|
   # executables are used for development purposes only
   gem.executables   = []
 
-  gem.required_ruby_version = '~> 2.3'
+  gem.required_ruby_version = '>= 2.5'
 
   # optional gems (required by some of the parts)
-  gem.add_dependency "simple-service", "~> 0.2.1"
+  gem.add_dependency "simple-service", "~> 0.2.2"
 end

@@ -87,8 +87,17 @@ module Simple::CLI
     # Run service.
     Runner.run! service, options.command, *args, verbose: options.verbose?
   rescue ::Simple::Service::ArgumentError
-    STDERR.puts "#{$!}\n\n"
-    Helper.help_on_command! service, options.command, verbose: false
+    STDERR.puts <<~MSG
+      #{$!}
+      
+      You probably run the command with invalid arguments; to learn more run
+      
+        #{$0} help #{options.command}
+        
+      Error location:
+      
+      - #{$!.backtrace[0,5].join("\n- ")}
+    MSG
   rescue StandardError => e
     on_exception(e)
     exit 3
